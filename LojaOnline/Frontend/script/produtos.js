@@ -109,7 +109,10 @@ async function handleProductSubmit(event) {
         name: document.getElementById('productName').value,
         sku: document.getElementById('productSku').value,
         description: document.getElementById('productDescription').value,
-        price: parseFloat(document.getElementById('productPrice').value)
+        price: parseFloat(document.getElementById('productPrice').value),
+        category: document.getElementById('productCategory').value,
+        gender: document.getElementById('productGender').value,
+        imageUrl: document.getElementById('productImage').value
     };
 
     try {
@@ -151,6 +154,9 @@ async function editProduct(productId) {
         document.getElementById('productSku').value = product.sku;
         document.getElementById('productDescription').value = product.description || '';
         document.getElementById('productPrice').value = product.price;
+        document.getElementById('productCategory').value = product.category || 'T-Shirt';
+        document.getElementById('productGender').value = product.gender || 'Homem';
+        document.getElementById('productImage').value = product.imageUrl || '';
 
         // Atualiza o estado
         editingProductId = productId;
@@ -227,7 +233,27 @@ function showLoading(show) {
  * @param {string} message - Mensagem a exibir
  */
 function showSuccess(message) {
-    alert(message); // Pode substituir por um toast/notification mais elegante
+    const container = document.getElementById('alertContainer');
+    if (!container) return alert(message);
+
+    container.innerHTML = `
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+
+    // Scroll para o topo para ver a mensagem
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Remover automaticamente após 4 segundos
+    setTimeout(() => {
+        const alert = container.querySelector('.alert');
+        if (alert) {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }
+    }, 4000);
 }
 
 /**
@@ -235,8 +261,28 @@ function showSuccess(message) {
  * @param {string} message - Mensagem a exibir
  */
 function showError(message) {
-    alert(message); // Pode substituir por um toast/notification mais elegante
+    const container = document.getElementById('alertContainer');
+    if (!container) return alert(message);
+
+    container.innerHTML = `
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+
+    // Scroll para o topo para ver a mensagem
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     console.error(message);
+
+    // Remover automaticamente após 5 segundos
+    setTimeout(() => {
+        const alert = container.querySelector('.alert');
+        if (alert) {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }
+    }, 5000);
 }
 
 /**

@@ -39,6 +39,9 @@ namespace LojaOnline.Controllers
                 Sku = x.Sku,
                 Description = x.Description,
                 Price = x.Price,
+                Category = x.Category,
+                Gender = x.Gender,
+                ImageUrl = x.ImageUrl,
                 CreatedAt = x.CreatedAt
 
             }).ToListAsync();
@@ -82,6 +85,9 @@ namespace LojaOnline.Controllers
                     .SetProperty(p => p.Sku, product.Sku)
                     .SetProperty(p => p.Description, product.Description)
                     .SetProperty(p => p.Price, product.Price)
+                    .SetProperty(p => p.Category, product.Category)
+                    .SetProperty(p => p.Gender, product.Gender)
+                    .SetProperty(p => p.ImageUrl, product.ImageUrl)
                 );
             return Ok(product);
         }

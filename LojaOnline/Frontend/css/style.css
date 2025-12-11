@@ -129,19 +129,25 @@ footer .socials a:hover { color:#f3c736; }
 
 .column {float: left; width: 25%;}
 
-.modal {display: none; position: fixed; z-index: 1000; padding-top: 100px; left: 0;top: 0; width: 100%; height: 100%;
+/* Lightbox specific styles scoped to #myModal to avoid conflict with Bootstrap .modal */
+#myModal {display: none; position: fixed; z-index: 1000; padding-top: 100px; left: 0;top: 0; width: 100%; height: 100%;
   overflow: auto; background-color: rgba(0, 0, 0, 0.9); opacity: 0; transition: opacity 0.3s ease-out;}
 
-.modal.open {opacity: 1;}
+#myModal.open {opacity: 1;}
 
-.modal-content {position: relative; background-color: transparent; margin: auto; padding: 0; width: 90%; max-width: 1200px; transform: scale(0.9); 
+#myModal .modal-content {position: relative; background-color: transparent; margin: auto; padding: 0; width: 90%; max-width: 1200px; transform: scale(0.9); 
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
 
-.modal.open .modal-content {transform: scale(1);}
+#myModal.open .modal-content {transform: scale(1);}
 
-.close {color: white; position: absolute; top: 10px; right: 25px; font-size: 35px; font-weight: bold; transition: color 0.2s ease;}
+/* Helper class for close button inside lightbox */
+.lightbox-close {color: white; position: absolute; top: 10px; right: 25px; font-size: 35px; font-weight: bold; transition: color 0.2s ease;}
 
-.close:hover, .close:focus {color: #999; text-decoration: none; cursor: pointer;}
+.lightbox-close:hover, .lightbox-close:focus {color: #999; text-decoration: none; cursor: pointer;}
+
+/* Ensure Bootstrap modals don't pick up these styles */
+.modal-backdrop { z-index: 1050; }
+
 
 .mySlides {display: none;}
 

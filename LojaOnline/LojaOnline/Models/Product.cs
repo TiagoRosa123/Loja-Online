@@ -13,11 +13,16 @@
         public string Name { get; set; } = string.Empty;
 
         // O '?' diz que a Descrição é opcional (pode ser 'null')
-        public string? Description { get; set; } 
+        public string Description { get; set; } = string.Empty; 
 
         // 'decimal' é o tipo correto para dinheiro, nunca uses 'double' ou 'float'
         public decimal Price { get; set; }
+        
+        // New Fields for Storefront
+        public string Category { get; set; } = string.Empty; // T-Shirt, Sweat, Casaco
+        public string Gender { get; set; } = string.Empty;   // Homem, Mulher
+        public string ImageUrl { get; set; } = string.Empty; // Link para imagem
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

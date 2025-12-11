@@ -22,10 +22,15 @@
         .product-form {
             background: #f8f9fa;
             color: #333;
-            /* Fix: Dark text for light background */
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 30px;
+        }
+
+        /* Override global white text for form labels and headers */
+        .product-form label,
+        .product-form h3 {
+            color: #333 !important;
         }
 
         .table-responsive {
@@ -45,6 +50,9 @@
     <!-- Main Content -->
     <main class="container my-5">
         <h1 class="text-center mb-4">Gestão de Produtos</h1>
+
+        <!-- Feedback Container -->
+        <div id="alertContainer"></div>
 
         <!-- Loading Indicator -->
         <div id="loadingIndicator" class="loading-indicator">
@@ -73,9 +81,32 @@
                     <textarea class="form-control" id="productDescription" rows="3"></textarea>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="productCategory" class="form-label">Categoria</label>
+                        <select class="form-select" id="productCategory">
+                            <option value="T-Shirt">T-Shirt</option>
+                            <option value="Sweat">Sweat</option>
+                            <option value="Casaco">Casaco</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="productGender" class="form-label">Género</label>
+                        <select class="form-select" id="productGender">
+                            <option value="Homem">Homem</option>
+                            <option value="Mulher">Mulher</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="productPrice" class="form-label">Preço (€) *</label>
+                        <input type="number" class="form-control" id="productPrice" step="0.01" min="0" required>
+                    </div>
+                </div>
+
                 <div class="mb-3">
-                    <label for="productPrice" class="form-label">Preço (€) *</label>
-                    <input type="number" class="form-control" id="productPrice" step="0.01" min="0" required>
+                    <label for="productImage" class="form-label">Imagem (URL ou Nome do Ficheiro)</label>
+                    <input type="text" class="form-control" id="productImage"
+                        placeholder="https://... ou minha-foto.jpg">
                 </div>
 
                 <div class="d-flex gap-2">

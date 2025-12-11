@@ -44,7 +44,19 @@ class ApiService {
 
             // Verifica se a resposta foi bem-sucedida
             if (!response.ok) {
-                throw new Error(`Erro HTTP! Status: ${response.status}`);
+                let errorMessage = `Erro HTTP! Status: ${response.status}`;
+                try {
+                    // Tenta ler o corpo da resposta para ver se tem mensagem de erro
+                    const errorBody = await response.text();
+                    // Tenta fazer parse se for JSON
+                    const errorJson = JSON.parse(errorBody);
+                    if (errorJson.message) errorMessage = errorJson.message;
+                    else if (typeof errorJson === 'string') errorMessage = errorJson;
+                    else errorMessage = errorBody;
+                } catch (e) {
+                    // Se falhar o parse, usa apenas o status
+                }
+                throw new Error(errorMessage);
             }
 
             // Tenta fazer parse do JSON

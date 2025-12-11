@@ -65,6 +65,10 @@ function currentSlide(n) {
 function showSlides(n) {
   var i;
   var slides = document.getElementsByClassName("mySlides");
+
+  // Se não houver slides nesta página, não faz nada (evita erro)
+  if (slides.length === 0) return;
+
   var dots = document.getElementsByClassName("demo");
   var captionText = document.getElementById("caption");
   if (n > slides.length) { slideIndex = 1 }
