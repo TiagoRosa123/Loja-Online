@@ -1,5 +1,6 @@
 ﻿using LojaOnline.Data;
 using LojaOnline.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +60,7 @@ namespace LojaOnline.Controllers
 
         // 3. CREATE (Atualizado)
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateProduct([FromBody] Product product)
         {
             _context.Products.Add(product); // Adiciona o produto ao DbSet
@@ -70,6 +72,7 @@ namespace LojaOnline.Controllers
 
         // 4. UPDATE (Atualizado)
         [HttpPut("EditProduct")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditProduct([FromBody] Product product )
         {
            var rows = await _context.Products
@@ -85,6 +88,7 @@ namespace LojaOnline.Controllers
 
         // 5. DELETE 
         [HttpDelete("DeleteProduct")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(long productId)
         {
             var rows = await _context.Products.Where(p => p.Id == productId).ExecuteDeleteAsync();
