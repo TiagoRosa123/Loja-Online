@@ -9,7 +9,7 @@ const API_BASE_URL = 'http://localhost:5068/api';
  * Classe ApiService - Centraliza todas as chamadas à API
  */
 class ApiService {
-    
+
     /**
      * Método auxiliar para fazer requisições HTTP
      * @param {string} endpoint - O endpoint da API (ex: '/Products/GetProducts')
@@ -18,7 +18,7 @@ class ApiService {
      */
     static async request(endpoint, options = {}) {
         const url = `${API_BASE_URL}${endpoint}`;
-        
+
         // Configuração padrão dos headers
         const defaultHeaders = {
             'Content-Type': 'application/json',
@@ -33,9 +33,15 @@ class ApiService {
             },
         };
 
+        // Adicionar token de autenticação se existir
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+
         try {
             const response = await fetch(url, config);
-            
+
             // Verifica se a resposta foi bem-sucedida
             if (!response.ok) {
                 throw new Error(`Erro HTTP! Status: ${response.status}`);
@@ -44,7 +50,7 @@ class ApiService {
             // Tenta fazer parse do JSON
             const data = await response.json();
             return data;
-            
+
         } catch (error) {
             console.error('Erro na requisição à API:', error);
             throw error;

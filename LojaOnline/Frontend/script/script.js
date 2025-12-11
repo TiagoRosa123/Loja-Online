@@ -21,6 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
           link.classList.add('active');
         }
       });
+
+      // Atualiza links de autenticação
+      if (typeof AuthService !== 'undefined' && AuthService.isAuthenticated()) {
+        document.querySelectorAll('.auth-guest').forEach(el => el.classList.add('d-none'));
+        document.querySelectorAll('.auth-user').forEach(el => el.classList.remove('d-none'));
+      }
+
     })
     .catch(err => console.error("Erro ao carregar navbar:", err));
 });

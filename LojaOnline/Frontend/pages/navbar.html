@@ -2,7 +2,7 @@
   <div class="container">
     <a class="navbar-brand" href="index.html">Box Caramela</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -18,19 +18,29 @@
         <li class="nav-item"><a class="nav-link" href="treinadores.html">Treinadores</a></li>
         <li class="nav-item"><a class="nav-link" href="inscricao.html">Inscrição</a></li>
         <li class="nav-item"><a class="nav-link" href="contactos.html">Contactos</a></li>
-       
+        <li class="nav-item"><a class="nav-link" href="produtos.html">Produtos</a></li>
+
+        <!-- Auth Links -->
+        <li class="nav-item auth-guest"><a class="nav-link" href="login.html">Login/Registo</a></li>
+        <li class="nav-item auth-user d-none"><a class="nav-link" href="#"
+            onclick="AuthService.logout(); return false;">Logout</a></li>
+
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown"
-             aria-expanded="false">Sociais</a>
+            aria-expanded="false">Sociais</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreDropdown">
-            <li><a class="dropdown-item" href="https://www.instagram.com/boxcaramela" target="_blank" rel="noopener">Instagram</a></li>
-            <li><a class="dropdown-item" href="https://www.facebook.com/p/Box-Caramela-100063781921543/?locale=pt_PT" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a class="dropdown-item" href="https://www.instagram.com/boxcaramela" target="_blank"
+                rel="noopener">Instagram</a></li>
+            <li><a class="dropdown-item" href="https://www.facebook.com/p/Box-Caramela-100063781921543/?locale=pt_PT"
+                target="_blank" rel="noopener">Facebook</a></li>
           </ul>
-          </li>
+        </li>
         <li class="nav-item ms-3 social-icons d-none d-lg-flex">
-          <a class="nav-link" href="https://www.instagram.com/boxcaramela" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a class="nav-link" href="https://www.facebook.com/p/Box-Caramela-100063781921543/?locale=pt_PT" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+          <a class="nav-link" href="https://www.instagram.com/boxcaramela" target="_blank" rel="noopener"
+            aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a class="nav-link" href="https://www.facebook.com/p/Box-Caramela-100063781921543/?locale=pt_PT"
+            target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
         </li>
       </ul>
     </div>

@@ -9,6 +9,18 @@ let editingProductId = null;
  * Carrega todos os produtos ao carregar a página
  */
 document.addEventListener('DOMContentLoaded', async () => {
+    // Verificar Autenticação
+    if (!AuthService.isAuthenticated()) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Verificação de Role (Admin)
+    if (!AuthService.isAdmin()) {
+        const adminForm = document.getElementById('adminProductForm');
+        if (adminForm) adminForm.style.display = 'none';
+    }
+
     await loadProducts();
     setupEventListeners();
 });
@@ -51,6 +63,14 @@ async function loadProducts() {
  */
 function displayProducts(products) {
     const tbody = document.getElementById('productsTableBody');
+    const isAdmin = AuthService.isAdmin();
+
+    // Esconder/Mostrar cabeçalho de Ações
+    // Nota: É melhor fazer isso no HTML mas aqui funciona para o exemplo
+    const actionHeader = document.querySelector('thead tr th:last-child');
+    if (actionHeader) {
+        actionHeader.style.display = isAdmin ? '' : 'none';
+    }
 
     if (!products || products.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="text-center">Nenhum produto encontrado</td></tr>';
@@ -64,6 +84,7 @@ function displayProducts(products) {
             <td>${escapeHtml(product.sku)}</td>
             <td>${escapeHtml(product.description || '-')}</td>
             <td>€${product.price.toFixed(2)}</td>
+            ${isAdmin ? `
             <td>
                 <button class="btn btn-sm btn-primary" onclick="editProduct(${product.id})">
                     Editar
@@ -72,6 +93,7 @@ function displayProducts(products) {
                     Eliminar
                 </button>
             </td>
+            ` : ''}
         </tr>
     `).join('');
 }
