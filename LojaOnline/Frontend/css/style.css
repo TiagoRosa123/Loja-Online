@@ -1,0 +1,185 @@
+/* =========================================================
+   BASE / RESET
+   ========================================================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {font-family: 'Poppins', Arial, sans-serif; background:#0e0d0d; color:#fdfcfc;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+
+body, p, label, h1, h2 {color: #fff; opacity: 1;}
+
+p.footer-text {font-size: small;}
+
+/* Links */
+a { text-decoration: none; }
+a:hover { text-decoration: none; }
+
+/* Container adjustments */
+.container { max-width: 1140px; margin: 0 auto; padding: 0 16px; }
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+.navbar { padding: 0.1rem 0; box-shadow: 0 2px 6px rgba(0,0,0,0.35); position:fixed; top:0; width: 100%; z-index:100; }
+.navbar-brand { color: #f3c736 !important; font-weight: 700; letter-spacing: 1px;}
+.navbar .nav-link { color:#fdfcfc !important; text-transform:uppercase; font-weight:600; font-size:0.9rem; margin-right:0.35rem; }
+.navbar .nav-link:hover, .navbar .nav-link.active { color:#f3c736 !important; }
+
+/* social icons inside navbar */
+.social-icons .nav-link { color:#fdfcfc !important; font-size:1.05rem; margin-left:6px; }
+.social-icons .nav-link:hover { color:#f3c736 !important; }
+
+/* dropdown styling */
+.dropdown-menu { background:#141414; border:none; box-shadow: 0 8px 20px rgba(0,0,0,0.6); }
+.dropdown-item { color:#fff; }
+.dropdown-item:hover { background:#f3c736 !important; color:#000 !important; }
+
+/* =========================================================
+   HERO (PARALLAX)
+   ========================================================= */
+.hero {
+  min-height: 90vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding: 60px 16px;
+  background: url("/images/boxCaramela.png") center/cover fixed no-repeat;
+  position:relative;
+}
+.hero::after {
+  content:"";
+  position:absolute; inset:0; background:rgba(0,0,0,0.45);
+}
+.hero > div { position:relative; z-index:2; }
+.hero h1 { font-size:3rem; color:#f3c736; margin-bottom:0.6rem; letter-spacing:1px; }
+.hero p { color:#fff; opacity:0.95; margin-bottom:1.2rem; font-size:1.05rem; }
+
+/* CTA button */
+.btn-primary {
+  background:#f3c736; color:#000; border:none; padding:12px 26px; border-radius:40px;
+  font-weight:700; text-transform:uppercase; letter-spacing:1px; transition:all .25s ease;
+}
+.btn-primary:hover { background:#b39028; transform:translateY(-3px); }
+
+.btn{ background-color: #f3c736; border: none; text-decoration:none; font-weight: 700; outline: none; }
+.btn a {color: #000 !important; text-decoration: none;}
+.btn a:hover {color: #000 !important;}
+.btn:hover {background-color:#daad1a; color:#000; text-decoration:none; transition: all; outline: none;}
+
+/* =========================================================
+   SECTIONS / CARDS
+   ========================================================= */
+section { padding:70px 0; }
+section.bg-dark { background:#0f0f0f; }
+h2.section-title { color:#f3c736; margin-bottom:24px; font-weight:700; text-align:center; }
+
+/* Service cards */
+.service-card {
+  background:#121212; border-radius:16px; padding:28px; color:#fff; text-align:center;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.service-card:hover { transform: translateY(-10px) rotate(-0.6deg); box-shadow: 0 14px 30px rgba(0,0,0,0.6); }
+.service-card .icon { font-size:3rem; color:#f3c736; margin-bottom:12px; }
+
+/* Gallery */
+.gallery-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap:16px; }
+.gallery-grid img { width:100%; height:160px; object-fit:cover; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.6); transition: transform .3s ease; }
+.gallery-grid img:hover { transform: scale(1.03); }
+
+/* Tables */
+.table-custom { width:100%; border-collapse:collapse; color:#fff; margin-top:18px; }
+.table-custom th, .table-custom td { padding:12px 10px; border-bottom:1px solid rgba(255,255,255,0.04); text-align:left; }
+.table-custom th { background:rgba(0,0,0,0.35); color:#f3c736; }
+
+/* Forms */
+.form-control, input[type="text"], input[type="email"], textarea, select {
+  background:#686767; color:#fff; border:1px solid rgba(255,255,255,0.06); padding:10px 12px; border-radius:8px;
+}
+input::placeholder, textarea::placeholder :-moz-placeholder, ::-moz-placeholder, ::-webkit-input-placeholder, 
+:-ms-input-placeholder {color: #ffffff; opacity: 1;}
+
+/* Cards small */
+.card-cta { background:#141414; border-radius:12px; padding:18px; box-shadow:0 8px 20px rgba(0,0,0,0.5); }
+.card-cta ul li a {color: #fff; text-decoration: none;}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+footer { background:#0e0d0d; color:#ffffff; padding:36px 0; text-align:center; border-top:1px solid rgba(255,255,255,0.03);}
+footer .socials a { color:#fff; margin: 0 6px; font-size:1.2rem; }
+footer .socials a:hover { color:#f3c736; }
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+.second-text {color: #fff; opacity: 1;}
+
+/* Buttons */
+.botao a { background-color: #141414; border: none; color: #fff8f8; font-weight: 700; }
+.botao a:hover { color: #daad1a; text-decoration: none; }
+
+/* =========================================================
+   LIGHTBOX
+   ========================================================= */
+
+.row > .column {padding: 0 8px;}
+
+.row:after {content: ""; display: table; clear: both;}
+
+.column {float: left; width: 25%;}
+
+.modal {display: none; position: fixed; z-index: 1000; padding-top: 100px; left: 0;top: 0; width: 100%; height: 100%;
+  overflow: auto; background-color: rgba(0, 0, 0, 0.9); opacity: 0; transition: opacity 0.3s ease-out;}
+
+.modal.open {opacity: 1;}
+
+.modal-content {position: relative; background-color: transparent; margin: auto; padding: 0; width: 90%; max-width: 1200px; transform: scale(0.9); 
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+
+.modal.open .modal-content {transform: scale(1);}
+
+.close {color: white; position: absolute; top: 10px; right: 25px; font-size: 35px; font-weight: bold; transition: color 0.2s ease;}
+
+.close:hover, .close:focus {color: #999; text-decoration: none; cursor: pointer;}
+
+.mySlides {display: none;}
+
+.cursor {cursor: pointer;}
+
+/* Next & previous buttons */
+.prev, .next {cursor: pointer; position: absolute; top: 50%; width: auto; padding: 16px; margin-top: -50px; color: white; font-weight: bold;
+  font-size: 20px; transition: 0.6s ease; border-radius: 0 3px 3px 0; user-select: none; -webkit-user-select: none;}
+
+/* Position the "next button" to the right */
+.next { right: 0; border-radius: 3px 0 0 3px;}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {background-color: rgba(0, 0, 0, 0.8);}
+
+/* Number text (1/3 etc) */
+.numbertext {color: #f2f2f2; font-size: 12px; padding: 8px 12px; position: absolute; top: 0;}
+
+img {margin-bottom: -4px;}
+
+.caption-container {text-align: center; background-color: black; padding: 2px 16px; color: white;}
+
+.demo {opacity: 0.6;}
+
+.active,.demo:hover {opacity: 1;}
+
+img.hover-shadow {transition: 0.3s;}
+
+.hover-shadow:hover {box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+@media (max-width: 992px) {
+  .hero h1 { font-size:2.4rem; }
+}
+@media (max-width: 576px) {
+  .navbar .nav-link { font-size:0.85rem; }
+  .hero { padding: 40px 12px; }
+  .hero h1 { font-size:1.7rem; }
+}
