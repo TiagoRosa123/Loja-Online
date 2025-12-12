@@ -55,6 +55,7 @@
 
     <!-- Main Content -->
     <div class="container my-5">
+        <br><br><br>
         <h1 class="text-center mb-4">A Nossa Loja</h1>
 
         <div class="row">
@@ -104,6 +105,11 @@
                             <input class="form-check-input filter-radio" type="radio" name="category" id="catJacket"
                                 value="Casaco">
                             <label class="form-check-label" for="catJacket">Casacos</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input filter-radio" type="radio" name="category" id="catTop"
+                                value="TopDesportivo">
+                            <label class="form-check-label" for="catTop">Top Desportivo</label>
                         </div>
                     </div>
                 </div>
@@ -157,6 +163,14 @@
 
     <script>
         let allProducts = [];
+
+        // Helper global
+        window.addToCartWithSize = function (product, selectId, btn) {
+            const select = document.getElementById(selectId);
+            const size = select ? select.value : 'M';
+            const pWithSize = { ...product, size: size };
+            CartService.addItem(pWithSize, btn);
+        };
 
         document.addEventListener('DOMContentLoaded', async () => {
             await loadCatalog();
@@ -216,9 +230,20 @@
                             <h5 class="card-title">${p.name}</h5>
                             <p class="text-muted small mb-2">${p.sku}</p>
                             <p class="card-text text-truncate">${p.description || ''}</p>
+                            
+                            <!-- Size Selector -->
+                            <div class="mb-2">
+                                <select class="form-select form-select-sm" id="size-select-${p.id}" onclick="event.stopPropagation()">
+                                    <option value="S">S</option>
+                                    <option value="M" selected>M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                </select>
+                            </div>
+
                             <div class="mt-auto d-flex justify-content-between align-items-center">
                                 <span class="h5 mb-0 text-primary">€${p.price.toFixed(2)}</span>
-                                <button class="btn btn-outline-primary btn-sm" onclick='CartService.addItem(${JSON.stringify(p).replace(/'/g, "&#39;")}, this)'>
+                                <button class="btn btn-outline-primary btn-sm" onclick='addToCartWithSize(${JSON.stringify(p).replace(/'/g, "&#39;")}, "size-select-${p.id}", this)'>
                                     Adicionar
                                 </button>
                             </div>
@@ -261,7 +286,7 @@
                     ${items.map(item => `
                         <div class="list-group-item d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="mb-0">${item.name}</h6>
+                                <h6 class="mb-0">${item.name} <span class="badge bg-light text-dark border">${item.size || 'Unique'}</span></h6>
                                 <small class="text-muted">€${item.price.toFixed(2)} x ${item.quantity}</small>
                             </div>
                             <div class="d-flex align-items-center">

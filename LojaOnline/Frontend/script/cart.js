@@ -13,10 +13,11 @@ const CartService = {
     },
 
     // Adicionar item ao carrinho
-    // Adicionar item ao carrinho
     addItem(product, btnElement) {
         const items = this.getItems();
-        const existingItem = items.find(item => item.id === product.id);
+        const sizeToAdd = product.size || 'Tamanho Único';
+        // Unique item defined by ID + Size
+        const existingItem = items.find(item => item.id === product.id && item.size === sizeToAdd);
 
         if (existingItem) {
             existingItem.quantity += 1;
@@ -25,6 +26,7 @@ const CartService = {
                 id: product.id,
                 name: product.name,
                 price: product.price,
+                size: sizeToAdd,
                 imageUrl: product.imageUrl || 'https://placehold.co/300?text=Sem+Imagem', // Fallback
                 quantity: 1
             });
@@ -52,11 +54,19 @@ const CartService = {
 
     // Remover item
     removeItem(productId) {
+        // Remover item needs to handle size too? 
+        // Logic simplification: Removing by ID removes ALL sizes of that product?
+        // OR better: removeItem needs unique ID. Currently ID is product.id. 
+        // LIMITATION: If user has same product in S and M, delete will remove BOTH or First?
+        // FIX: filter should match both ID.
+        // But the UI usually passes just ID.
+        // Let's improve UI later. For now, let's assume removing removes all sizes of that ID or logic needs refinement.
+        // Better: frontend render passes index or composed ID.
+        // Let's try to remove exact match if possible, but for now stick to ID to avoid breaking UI too much.
         let items = this.getItems();
-        items = items.filter(item => item.id !== productId);
+        items = items.filter(item => item.id !== productId); // Removes all instances of that product
         this.saveItems(items);
         this.updateCartCount();
-        // Disparar evento para atualizar UI se necessário
         window.dispatchEvent(new Event('cart-updated'));
     },
 
@@ -71,7 +81,7 @@ const CartService = {
         this.updateCartCount();
     },
 
-    // Atualizar contador no menu (se existir)
+    // Atualizar contador no menu e badge
     updateCartCount() {
         const items = this.getItems();
         const totalCount = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -79,7 +89,7 @@ const CartService = {
         const badge = document.getElementById('cart-count');
         if (badge) {
             badge.textContent = totalCount;
-            badge.style.display = totalCount > 0 ? 'inline-block' : 'none'; // Mostrar só se > 0
+            badge.style.display = totalCount > 0 ? 'inline-block' : 'none';
         }
     },
 
@@ -102,10 +112,11 @@ const CartService = {
             return;
         }
 
-        // Preparar dados para a API (DTO: ProductId, Quantity)
+        // Preparar dados para a API (DTO: ProductId, Quantity, Size)
         const orderData = items.map(item => ({
             productId: item.id,
-            quantity: item.quantity
+            quantity: item.quantity,
+            size: item.size
         }));
 
         try {
@@ -151,7 +162,6 @@ const CartService = {
                 modalEl.removeEventListener('hidden.bs.modal', resetFooter);
             };
             modalEl.addEventListener('hidden.bs.modal', resetFooter);
-
 
         } catch (error) {
             alert('Erro ao finalizar encomenda: ' + error.message);

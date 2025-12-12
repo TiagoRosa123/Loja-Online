@@ -12,6 +12,7 @@ namespace LojaOnline.Models
         public long ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty; // Snapshot do nome
         public decimal Price { get; set; } // Preço na altura da compra
+        public string Size { get; set; } = string.Empty;
         public int Quantity { get; set; }
     }
 }

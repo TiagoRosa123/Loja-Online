@@ -84,7 +84,8 @@ namespace LojaOnline.Controllers
                             ProductId = product.Id,
                             ProductName = product.Name,
                             Price = product.Price, // Snapshot price
-                            Quantity = item.Quantity
+                            Quantity = item.Quantity,
+                            Size = item.Size ?? "N/A"
                         };
                         order.Items.Add(orderItem);
                         total += orderItem.Price * orderItem.Quantity;
@@ -127,5 +128,8 @@ namespace LojaOnline.Controllers
 
         [JsonPropertyName("quantity")]
         public int Quantity { get; set; }
+
+        [JsonPropertyName("size")]
+        public string Size { get; set; } = string.Empty;
     }
 }

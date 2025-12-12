@@ -62,6 +62,25 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowFrontend");
 // --- Fim Ativar CORS ---
 
+// --- AUTO-MIGRATION (Dev Trick) ---
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
+    try
+    {
+        // Tenta adicionar a coluna Size se não existir
+        // Em MySQL, "IF NOT EXISTS" para colunas pode ser complexo, 
+        // mas podemos tentar executar e ignorar erro se já existir.
+        // Ou verificar schemas. Simplificando:
+        db.Database.ExecuteSqlRaw("ALTER TABLE OrderItems ADD COLUMN Size VARCHAR(50) DEFAULT '';");
+    }
+    catch
+    {
+        // Ignora erro se a coluna já existir
+    }
+}
+// --- FIM AUTO-MIGRATION ---
+
 app.UseAuthentication(); // Adicionar antes de Authorization
 app.UseAuthorization();
 

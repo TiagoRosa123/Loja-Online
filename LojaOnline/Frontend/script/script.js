@@ -13,12 +13,20 @@ document.addEventListener("DOMContentLoaded", () => {
       dropdowns.forEach(el => new bootstrap.Dropdown(el));
 
       // Marca link activo com base no pathname
-      const links = document.querySelectorAll('.nav-link');
+      const links = document.querySelectorAll('.nav-link, .dropdown-item');
       const path = window.location.pathname.split("/").pop() || 'index.html';
       links.forEach(link => {
         const href = link.getAttribute('href');
         if (href === path) {
           link.classList.add('active');
+          // Se for um item de dropdown, ativa também o pai (o toggle)
+          if (link.classList.contains('dropdown-item')) {
+            const parentDropdown = link.closest('.dropdown');
+            if (parentDropdown) {
+              const toggle = parentDropdown.querySelector('.dropdown-toggle');
+              if (toggle) toggle.classList.add('active');
+            }
+          }
         }
       });
 
