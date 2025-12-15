@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Produtos - Loja Online</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .loading-indicator {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .product-form {
+            background: #f8f9fa;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        /* Override global white text for form labels and headers */
+        .product-form label,
+        .product-form h3 {
+            color: #333 !important;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+
+        #cancelEditBtn {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content -->
+    <main class="container my-5">
+        <br><br><br>
+        <h1 class="text-center mb-4">Gestão de Produtos</h1>
+
+        <!-- Feedback Container -->
+        <div id="alertContainer"></div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="loading-indicator">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">A carregar...</span>
+            </div>
+        </div>
+
+        <!-- Formulário de Produto -->
+        <div class="product-form" id="adminProductForm">
+            <h3 id="formTitle">Adicionar Produto</h3>
+            <form id="productForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="productName" class="form-label">Nome do Produto *</label>
+                        <input type="text" class="form-control" id="productName" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="productSku" class="form-label">SKU *</label>
+                        <input type="text" class="form-control" id="productSku" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="productDescription" class="form-label">Descrição</label>
+                    <textarea class="form-control" id="productDescription" rows="3"></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="productCategory" class="form-label">Categoria</label>
+                        <select class="form-select" id="productCategory">
+                            <option value="T-Shirt">T-Shirt</option>
+                            <option value="Sweat">Sweat</option>
+                            <option value="Casaco">Casaco</option>
+                            <option value="TopDesportivo">Top Desportivo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="productGender" class="form-label">Género</label>
+                        <select class="form-select" id="productGender">
+                            <option value="Homem">Homem</option>
+                            <option value="Mulher">Mulher</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="productPrice" class="form-label">Preço (€) *</label>
+                        <input type="number" class="form-control" id="productPrice" step="0.01" min="0" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="productImage" class="form-label">Imagem (URL ou Nome do Ficheiro)</label>
+                    <input type="text" class="form-control" id="productImage"
+                        placeholder="https://... ou minha-foto.jpg">
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" id="submitBtn" class="btn btn-primary">Criar Produto</button>
+                    <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tabela de Produtos -->
+        <div class="table-responsive">
+            <h3>Lista de Produtos</h3>
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>SKU</th>
+                        <th>Descrição</th>
+                        <th>Preço</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="productsTableBody">
+                    <tr>
+                        <td colspan="6" class="text-center">A carregar produtos...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- API Service -->
+    <script src="../script/api-service.js"></script>
+
+    <!-- Auth Service -->
+    <script src="../script/auth-service.js"></script>
+
+    <!-- Produtos Script -->
+    <script src="../script/produtos.js"></script>
+
+    <!-- Script Principal -->
+    <script src="../script/script.js"></script>
+</body>
+
+</html>

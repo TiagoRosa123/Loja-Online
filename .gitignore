@@ -1,0 +1,26 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+
+# VS Code files
+.vscode/
+
+# User-specific files
+*.suo
+*.userprefs
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+
+# Logs
+*.log

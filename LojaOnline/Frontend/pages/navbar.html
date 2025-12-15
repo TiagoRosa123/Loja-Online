@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Box Caramela</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="boxDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            A Box
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="boxDropdown">
+            <li><a class="dropdown-item" href="a_box.html">Sobre Nós</a></li>
+            <li><a class="dropdown-item" href="nosso_espaco.html">Nosso Espaço</a></li>
+            <li><a class="dropdown-item" href="treinadores.html">Treinadores</a></li>
+            <li><a class="dropdown-item" href="galeria.html">Galeria</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="infoDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Informações
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="infoDropdown">
+            <li><a class="dropdown-item" href="servicos.html">Serviços</a></li>
+            <li><a class="dropdown-item" href="precos.html">Preços</a></li>
+            <li><a class="dropdown-item" href="horarios.html">Horários</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item"><a class="nav-link" href="inscricao.html">Inscrição</a></li>
+        <li class="nav-item"><a class="nav-link" href="contactos.html">Contactos</a></li>
+        <li class="nav-item"><a class="nav-link" href="loja.html">Loja Online</a></li>
+        <!-- <li class="nav-item"><a class="nav-link" href="produtos.html">Gestão (Admin)</a></li> -->
+
+        <!-- Cart Link -->
+        <li class="nav-item">
+          <a class="nav-link position-relative" href="#" data-bs-toggle="modal" data-bs-target="#cartModal">
+            🛒
+            <span id="cart-count"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              style="display:none; font-size: 0.6em;">
+              0
+            </span>
+          </a>
+        </li>
+
+        <!-- Auth Links -->
+        <li class="nav-item auth-guest"><a class="nav-link" href="login.html">Login/Registo</a></li>
+        <li class="nav-item auth-user d-none"><a class="nav-link" href="#"
+            onclick="AuthService.logout(); return false;">Logout</a></li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">Sociais</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreDropdown">
+            <li><a class="dropdown-item" href="https://www.instagram.com/boxcaramela" target="_blank"
+                rel="noopener">Instagram</a></li>
+            <li><a class="dropdown-item" href="https://www.facebook.com/p/Box-Caramela-100063781921543/?locale=pt_PT"
+                target="_blank" rel="noopener">Facebook</a></li>
+          </ul>
+        </li>
+        <li class="nav-item ms-3 social-icons d-none d-lg-flex">
+          <a class="nav-link" href="https://www.instagram.com/boxcaramela" target="_blank" rel="noopener"
+            aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a class="nav-link" href="https://www.facebook.com/p/Box-Caramela-100063781921543/?locale=pt_PT"
+            target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

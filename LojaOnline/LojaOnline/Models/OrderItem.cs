@@ -1,20 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Text.Json.Serialization;
 
 namespace LojaOnline.Models
 {
     public class OrderItem
     {
         public long Id { get; set; }
+        public long OrderId { get; set; }
+        [JsonIgnore]
+        public Order? Order { get; set; }
 
-        public long OrderId { get; set; } // Chave estrangeira
-        public Order? Order { get; set; } // Propriedade de navegação
-
-        public long ProductId { get; set; } // Chave estrangeira
-        public Product? Product { get; set; } // Propriedade de navegação
-
+        public long ProductId { get; set; }
+        public string ProductName { get; set; } = string.Empty; // Snapshot do nome
+        public decimal Price { get; set; } // Preço na altura da compra
+        public string Size { get; set; } = string.Empty;
         public int Quantity { get; set; }
-
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal UnitPrice { get; set; } // Preço no momento da compra
     }
 }

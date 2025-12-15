@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Online - Box Caramela</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .product-card {
+            transition: transform 0.2s;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-img {
+            height: 250px;
+            /* Altura fixa para uniformidade */
+            object-fit: cover;
+            background-color: #f0f0f0;
+        }
+
+        .filters-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            color: #212529;
+            /* Text dark specifically for this light box */
+        }
+
+        /* Override global white text rules for filter elements */
+        .filters-section h4,
+        .filters-section label {
+            color: #212529 !important;
+        }
+
+        #cart-modal .modal-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* Payment Method Options */
+        .payment-method-option {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .payment-method-option:hover {
+            background-color: #f8f9fa !important;
+            border-color: #0d6efd !important;
+        }
+
+        .payment-method-option input:checked+label {
+            color: #0d6efd !important;
+        }
+
+        .payment-method-option input:checked~* {
+            border-color: #0d6efd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <br><br><br>
+        <h1 class="text-center mb-4">A Nossa Loja</h1>
+
+        <div class="row">
+            <!-- Sidebar Filtros -->
+            <div class="col-md-3">
+                <div class="filters-section sticky-top" style="top: 80px; z-index: 100;">
+                    <h4>Filtros</h4>
+                    <hr>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Género</label>
+                        <div class="form-check">
+                            <input class="form-check-input filter-radio" type="radio" name="gender" id="genderAll"
+                                value="" checked>
+                            <label class="form-check-label" for="genderAll">Todos</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input filter-radio" type="radio" name="gender" id="genderMan"
+                                value="Homem">
+                            <label class="form-check-label" for="genderMan">Homem</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input filter-radio" type="radio" name="gender" id="genderWoman"
+                                value="Mulher">
+                            <label class="form-check-label" for="genderWoman">Mulher</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Categoria</label>
+                        <div class="form-check">
+                            <input class="form-check-input filter-radio" type="radio" name="category" id="catAll"
+                                value="" checked>
+                            <label class="form-check-label" for="catAll">Todas</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input filter-radio" type="radio" name="category" id="catTshirt"
+                                value="T-Shirt">
+                            <label class="form-check-label" for="catTshirt">T-Shirts</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input filter-radio" type="radio" name="category" id="catSweat"
+                                value="Sweat">
+                            <label class="form-check-label" for="catSweat">Sweats</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input filter-radio" type="radio" name="category" id="catJacket"
+                                value="Casaco">
+                            <label class="form-check-label" for="catJacket">Casacos</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input filter-radio" type="radio" name="category" id="catTop"
+                                value="TopDesportivo">
+                            <label class="form-check-label" for="catTop">Top Desportivo</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Produtos -->
+            <div class="col-md-9">
+                <div id="loadingIndicator" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">A carregar...</span>
+                    </div>
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="productsGrid">
+                    <!-- Products will be injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Carrinho -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">O Teu Carrinho</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="cartItemsContainer">
+                    <!-- Items do carrinho -->
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <h5 class="mb-0">Total: <span id="cartTotal">€0.00</span></h5>
+                    <div>
+                        <button type="button" class="btn btn-secondary" onclick="CartService.clear()">Limpar</button>
+                        <button type="button" class="btn btn-success" onclick="CartService.checkout()">Finalizar
+                            Compra</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pagamento -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">💳 Dados de Pagamento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="paymentForm">
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            <strong>ℹ️ Modo de Demonstração</strong><br>
+                            Este é um formulário de demonstração. Os dados não serão processados por um gateway real.
+                        </div>
+
+                        <!-- Seleção de Método de Pagamento -->
+                        <h6 class="mb-3 text-dark">Método de Pagamento</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <div class="form-check payment-method-option p-3 border rounded bg-white">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="methodCard"
+                                        value="card" checked>
+                                    <label class="form-check-label w-100 text-dark" for="methodCard">
+                                        <strong>💳 Cartão de Crédito/Débito</strong><br>
+                                        <small class="text-muted">Visa, Mastercard, American Express</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check payment-method-option p-3 border rounded bg-white">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="methodMBWay"
+                                        value="mbway">
+                                    <label class="form-check-label w-100 text-dark" for="methodMBWay">
+                                        <strong>📱 MB Way</strong><br>
+                                        <small class="text-muted">Pagamento por telemóvel</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check payment-method-option p-3 border rounded bg-white">
+                                    <input class="form-check-input" type="radio" name="paymentMethod"
+                                        id="methodTransfer" value="transfer">
+                                    <label class="form-check-label w-100 text-dark" for="methodTransfer">
+                                        <strong>🏦 Transferência Bancária</strong><br>
+                                        <small class="text-muted">Pagamento por referência</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check payment-method-option p-3 border rounded bg-white">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="methodPayPal"
+                                        value="paypal">
+                                    <label class="form-check-label w-100 text-dark" for="methodPayPal">
+                                        <strong>🅿️ PayPal</strong><br>
+                                        <small class="text-muted">Pagamento seguro online</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos de Cartão (mostrado por padrão) -->
+                        <div id="cardFields">
+
+                            <h6 class="mb-3 text-dark">Informações do Cartão</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-12">
+                                    <label class="form-label text-dark">Número do Cartão</label>
+                                    <input type="text" class="form-control bg-white text-dark"
+                                        placeholder="1234 5678 9012 3456" pattern="[0-9\s]{13,19}" maxlength="19"
+                                        id="cardNumber">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-dark">Validade</label>
+                                    <input type="text" class="form-control bg-white text-dark" placeholder="MM/AA"
+                                        pattern="(0[1-9]|1[0-2])\/[0-9]{2}" maxlength="5" id="cardExpiry">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-dark">CVV</label>
+                                    <input type="text" class="form-control bg-white text-dark" placeholder="123"
+                                        pattern="[0-9]{3,4}" maxlength="4" id="cardCVV">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos MB Way (oculto por padrão) -->
+                        <div id="mbwayFields" style="display: none;">
+                            <h6 class="mb-3 text-dark">Dados MB Way</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-12">
+                                    <label class="form-label text-dark">Número de Telemóvel</label>
+                                    <input type="tel" class="form-control bg-white text-dark" placeholder="912 345 678"
+                                        pattern="[0-9]{9}" maxlength="9" id="mbwayPhone">
+                                    <small class="text-muted">Receberá uma notificação no seu telemóvel para confirmar o
+                                        pagamento</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos Transferência (oculto por padrão) -->
+                        <div id="transferFields" style="display: none;">
+                            <h6 class="mb-3 text-dark">Dados para Transferência</h6>
+                            <div class="alert alert-warning">
+                                <strong>📋 Referência Multibanco</strong><br>
+                                <div class="mt-2">
+                                    <strong>Entidade:</strong> 12345<br>
+                                    <strong>Referência:</strong> <span id="transferRef">000 000 000</span><br>
+                                    <strong>Valor:</strong> <span id="transferAmount">€0.00</span>
+                                </div>
+                                <small class="d-block mt-2">A encomenda será processada após confirmação do pagamento
+                                    (até 24h)</small>
+                            </div>
+                        </div>
+
+                        <!-- Campos PayPal (oculto por padrão) -->
+                        <div id="paypalFields" style="display: none;">
+                            <h6 class="mb-3 text-dark">PayPal</h6>
+                            <div class="alert alert-info">
+                                <strong class="text-dark">🅿️ Pagamento via PayPal</strong><br>
+                                <p class="mb-2 mt-2 text-dark">Será redirecionado para o PayPal para completar o
+                                    pagamento de
+                                    forma segura.</p>
+                            </div>
+                        </div>
+
+                        <h6 class="mb-3 text-dark">Morada de Faturação</h6>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label text-dark">Nome Completo</label>
+                                <input type="text" class="form-control bg-white text-dark" placeholder="João Silva"
+                                    required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-dark">Morada</label>
+                                <input type="text" class="form-control bg-white text-dark"
+                                    placeholder="Rua Example, 123" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-dark">Código Postal</label>
+                                <input type="text" class="form-control bg-white text-dark" placeholder="1234-567"
+                                    pattern="[0-9]{4}-[0-9]{3}" maxlength="8" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-dark">Cidade</label>
+                                <input type="text" class="form-control bg-white text-dark" placeholder="Lisboa"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-3 bg-light rounded">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-dark"><strong>Subtotal:</strong></span>
+                                <strong id="paymentSubtotal" class="text-dark">€0.00</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-dark"><strong>Envio:</strong></span>
+                                <strong class="text-dark">€5.00</strong>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <span class="h5 mb-0 text-dark">Total:</span>
+                                <strong class="h5 mb-0 text-primary" id="paymentTotal">€0.00</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-lock-fill me-1" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+                            </svg>
+                            Confirmar Pagamento
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sucesso -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-5">
+                    <div class="mb-4 text-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor"
+                            class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                        </svg>
+                    </div>
+                    <h3 class="mb-3">🎉 Encomenda Confirmada!</h3>
+                    <p class="text-muted mb-2">Número da Encomenda: <strong id="orderIdDisplay">#0000</strong></p>
+                    <p class="text-muted mb-4">Status do Pagamento: <strong
+                            id="paymentStatusDisplay">Processado</strong></p>
+                    <p class="small text-muted">Receberá um email de confirmação em breve.</p>
+                    <button class="btn btn-primary mt-3" data-bs-dismiss="modal">Continuar a Comprar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../script/api-service.js"></script>
+    <script src="../script/auth-service.js"></script>
+    <script src="../script/cart.js"></script>
+    <script src="../script/script.js"></script>
+
+    <script>
+        let allProducts = [];
+
+        // Helper global
+        window.addToCartWithSize = function (product, selectId, btn) {
+            const select = document.getElementById(selectId);
+            const size = select ? select.value : 'M';
+            const pWithSize = { ...product, size: size };
+            CartService.addItem(pWithSize, btn);
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadCatalog();
+            setupFilters();
+
+            // Listen for cart updates to refresh modal if open
+            window.addEventListener('cart-updated', renderCartModal);
+
+            // Add Modal Event Listener to render on open
+            const cartModal = document.getElementById('cartModal');
+            cartModal.addEventListener('show.bs.modal', renderCartModal);
+        });
+
+        async function loadCatalog() {
+            const loader = document.getElementById('loadingIndicator');
+            const grid = document.getElementById('productsGrid');
+
+            try {
+                allProducts = await ApiService.getAllProducts();
+                renderProducts(allProducts);
+            } catch (error) {
+                grid.innerHTML = `<div class="alert alert-danger w-100">Erro ao carregar catálogo: ${error.message}</div>`;
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById('productsGrid');
+
+            if (products.length === 0) {
+                grid.innerHTML = '<div class="col-12 text-center p-5"><h4>Nenhum produto encontrado com estes filtros.</h4></div>';
+                return;
+            }
+
+            grid.innerHTML = products.map(p => {
+                // Lógica de "Smart Path": 
+                // Se começar por http/https, usa o link direto.
+                // Se não, assume que é um ficheiro na pasta ../images/
+                let imgSource;
+                if (!p.imageUrl) {
+                    imgSource = 'https://placehold.co/300?text=Sem+Imagem';
+                } else if (p.imageUrl.startsWith('http')) {
+                    imgSource = p.imageUrl;
+                } else {
+                    imgSource = '../images/' + p.imageUrl;
+                }
+
+                return `
+                <div class="col">
+                    <div class="card product-card">
+                        <img src="${imgSource}" 
+                             class="card-img-top product-img" 
+                             alt="${p.name}"
+                             onerror="this.onerror=null; this.src='https://placehold.co/300?text=Sem+Imagem';">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">${p.name}</h5>
+                            <p class="text-muted small mb-2">${p.sku}</p>
+                            <p class="card-text text-truncate">${p.description || ''}</p>
+                            
+                            <!-- Size Selector -->
+                            <div class="mb-2">
+                                <select class="form-select form-select-sm" id="size-select-${p.id}" onclick="event.stopPropagation()">
+                                    <option value="S">S</option>
+                                    <option value="M" selected>M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                </select>
+                            </div>
+
+                            <div class="mt-auto d-flex justify-content-between align-items-center">
+                                <span class="h5 mb-0 text-primary">€${p.price.toFixed(2)}</span>
+                                <button class="btn btn-outline-primary btn-sm" onclick='addToCartWithSize(${JSON.stringify(p).replace(/'/g, "&#39;")}, "size-select-${p.id}", this)'>
+                                    Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function setupFilters() {
+            const filters = document.querySelectorAll('.filter-radio');
+            filters.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    const selectedGender = document.querySelector('input[name="gender"]:checked').value;
+                    const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+
+                    const filtered = allProducts.filter(p => {
+                        const genderMatch = !selectedGender || (p.gender === selectedGender);
+                        const categoryMatch = !selectedCategory || (p.category === selectedCategory);
+                        return genderMatch && categoryMatch;
+                    });
+
+                    renderProducts(filtered);
+                });
+            });
+        }
+
+        function renderCartModal() {
+            const container = document.getElementById('cartItemsContainer');
+            const items = CartService.getItems();
+
+            if (items.length === 0) {
+                container.innerHTML = '<p class="text-center my-4">O carrinho está vazio.</p>';
+                document.getElementById('cartTotal').textContent = '€0.00';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="list-group">
+                    ${items.map(item => `
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-0">${item.name} <span class="badge bg-light text-dark border">${item.size || 'Unique'}</span></h6>
+                                <small class="text-muted">€${item.price.toFixed(2)} x ${item.quantity}</small>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold me-3">€${(item.price * item.quantity).toFixed(2)}</span>
+                                <button class="btn btn-sm btn-danger" onclick="CartService.removeItem(${item.id})">&times;</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            document.getElementById('cartTotal').textContent = '€' + CartService.getTotal().toFixed(2);
+        }
+
+        // Handler para o formulário de pagamento
+        document.addEventListener('DOMContentLoaded', () => {
+            const paymentForm = document.getElementById('paymentForm');
+            const paymentModal = document.getElementById('paymentModal');
+
+            // Atualizar totais quando o modal de pagamento abrir
+            paymentModal.addEventListener('show.bs.modal', () => {
+                const subtotal = CartService.getTotal();
+                const shipping = 5.00;
+                const total = subtotal + shipping;
+
+                document.getElementById('paymentSubtotal').textContent = '€' + subtotal.toFixed(2);
+                document.getElementById('paymentTotal').textContent = '€' + total.toFixed(2);
+
+                // Atualizar referência de transferência
+                const transferRef = Math.floor(Math.random() * 999999999).toString().padStart(9, '0');
+                document.getElementById('transferRef').textContent = transferRef.match(/.{1,3}/g).join(' ');
+                document.getElementById('transferAmount').textContent = '€' + total.toFixed(2);
+            });
+
+            // Alternar entre métodos de pagamento
+            const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
+            const cardFields = document.getElementById('cardFields');
+            const mbwayFields = document.getElementById('mbwayFields');
+            const transferFields = document.getElementById('transferFields');
+            const paypalFields = document.getElementById('paypalFields');
+
+            paymentMethods.forEach(method => {
+                method.addEventListener('change', (e) => {
+                    // Ocultar todos os campos
+                    cardFields.style.display = 'none';
+                    mbwayFields.style.display = 'none';
+                    transferFields.style.display = 'none';
+                    paypalFields.style.display = 'none';
+
+                    // Remover required de todos os campos específicos
+                    document.getElementById('cardNumber').removeAttribute('required');
+                    document.getElementById('cardExpiry').removeAttribute('required');
+                    document.getElementById('cardCVV').removeAttribute('required');
+                    document.getElementById('mbwayPhone').removeAttribute('required');
+
+                    // Mostrar campos do método selecionado
+                    switch (e.target.value) {
+                        case 'card':
+                            cardFields.style.display = 'block';
+                            document.getElementById('cardNumber').setAttribute('required', 'required');
+                            document.getElementById('cardExpiry').setAttribute('required', 'required');
+                            document.getElementById('cardCVV').setAttribute('required', 'required');
+                            break;
+                        case 'mbway':
+                            mbwayFields.style.display = 'block';
+                            document.getElementById('mbwayPhone').setAttribute('required', 'required');
+                            break;
+                        case 'transfer':
+                            transferFields.style.display = 'block';
+                            break;
+                        case 'paypal':
+                            paypalFields.style.display = 'block';
+                            break;
+                    }
+                });
+            });
+
+            // Submeter formulário de pagamento
+            paymentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Desabilitar botão durante processamento
+                const submitBtn = paymentForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>A processar...';
+
+                // Simular delay de processamento (para parecer mais real)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Processar pagamento
+                await CartService.processPayment({
+                    // Aqui poderia enviar os dados do formulário se necessário
+                    // mas como é mock, apenas processamos a encomenda
+                });
+
+                // Restaurar botão
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            });
+        });
+    </script>
+</body>
+
+</html>
