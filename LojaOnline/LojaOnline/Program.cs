@@ -77,23 +77,18 @@ if (app.Environment.IsDevelopment())
     WireMockSetup.Start();
 }
 
-// Comentado para desenvolvimento - permite usar apenas HTTP
-// app.UseHttpsRedirection();
 
-// --- Ativar CORS (IMPORTANTE: deve vir antes de UseAuthorization) ---
+// --- Ativar CORS ---
 app.UseCors("AllowFrontend");
 // --- Fim Ativar CORS ---
 
-// --- AUTO-MIGRATION (Dev Trick) ---
+// --- AUTO-MIGRATION ---
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
     try
     {
         // Tenta adicionar a coluna Size se não existir
-        // Em MySQL, "IF NOT EXISTS" para colunas pode ser complexo, 
-        // mas podemos tentar executar e ignorar erro se já existir.
-        // Ou verificar schemas. Simplificando:
         db.Database.ExecuteSqlRaw("ALTER TABLE OrderItems ADD COLUMN Size VARCHAR(50) DEFAULT '';");
     }
     catch
@@ -103,7 +98,7 @@ using (var scope = app.Services.CreateScope())
 }
 // --- FIM AUTO-MIGRATION ---
 
-app.UseAuthentication(); // Adicionar antes de Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

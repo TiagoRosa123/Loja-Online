@@ -110,9 +110,6 @@ namespace LojaOnline.Services
         {
             using (var hmac = new HMACSHA512())
             {
-                // Just for simple demo. In prod store Salt + Hash. 
-                // Here we concat key + hash to string for simplicity or just use base64
-                // A better approach without more fields:
                 // Return "Salt.Hash" string
                 var salt = hmac.Key;
                 var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
